@@ -3,8 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:title" content="PNG NID Registration - Papua New Guinea National Identification">
+        <meta property="og:description" content="Register for your Papua New Guinea National ID card online. Secure digital registration with mobile verification, appointment scheduling, and secure payment processing.">
+        <meta property="og:image" content="img/og_image.jpg">
+        <meta property="og:url" content="https://darrenneah.github.io/joylinpngnid/">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="PNG Civil & Identity Registry">
+        <!-- Additional OG Tags -->
+        <meta property="og:locale" content="en_US">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="PNG NID Registration Portal">
+        <!--  For Facebook/WhatsApp, often needed for correct content identification  -->
+        <meta property="fb:app_id" content="your_fb_app_id" />
+
         <title>PNG NID Registration</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             :root {
                 --primary: #005eb8;
@@ -16,6 +33,10 @@
                 --warning: #ffc107;
                 --danger: #dc3545;
                 --gray: #6c757d;
+                --light-gray: #e9ecef;
+                --border-radius: 8px;
+                --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                --transition: all 0.3s ease;
             }
             
             * {
@@ -28,8 +49,8 @@
             body {
                 background-color: #f0f2f5;
                 color: #333;
-                overflow: hidden;
-                height: 100vh;
+                overflow-x: hidden;
+                min-height: 100vh;
                 touch-action: manipulation;
                 -webkit-tap-highlight-color: transparent;
             }
@@ -37,7 +58,7 @@
             #app-container {
                 position: relative;
                 width: 100%;
-                height: 100vh;
+                min-height: 100vh;
                 overflow: hidden;
             }
             
@@ -54,13 +75,15 @@
             /* App Content */
             #app-content {
                 position: relative;
-                height: 100%;
+                min-height: 100vh;
                 display: flex;
                 flex-direction: column;
                 z-index: 1;
-                background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.97);
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
                 overflow: hidden;
+                max-width: 1200px;
+                margin: 0 auto;
             }
             
             /* Header */
@@ -98,6 +121,11 @@
                 height: 30px;
             }
             
+            .logo img {
+                width: 30px;
+                height: 30px;
+            }
+            
             .app-title {
                 font-size: 1.2rem;
                 font-weight: bold;
@@ -110,22 +138,26 @@
             
             /* Progress Bar */
             .progress-container {
-                padding: 0.5rem 1rem;
+                padding: 0.8rem 1rem;
                 background: white;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                z-index: 5;
             }
             
             .progress-bar {
-                height: 6px;
-                background: #e9ecef;
-                border-radius: 3px;
+                height: 8px;
+                background: var(--light-gray);
+                border-radius: 4px;
                 overflow: hidden;
+                margin-bottom: 0.5rem;
             }
             
             .progress-fill {
                 height: 100%;
                 background: linear-gradient(to right, var(--primary), var(--secondary));
-                border-radius: 3px;
+                border-radius: 4px;
                 transition: width 0.5s ease;
                 width: 0%;
             }
@@ -133,7 +165,6 @@
             .step-indicator {
                 display: flex;
                 justify-content: space-between;
-                margin-top: 0.5rem;
                 font-size: 0.7rem;
                 color: var(--gray);
             }
@@ -147,7 +178,7 @@
             .main-content {
                 flex: 1;
                 overflow-y: auto;
-                padding: 1rem;
+                padding: 1.5rem;
                 -webkit-overflow-scrolling: touch;
             }
             
@@ -160,23 +191,68 @@
                 display: block;
             }
             
-            .form-group {
+            .step-title {
+                font-size: 1.5rem;
+                color: var(--primary);
                 margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 2px solid var(--light-gray);
+            }
+            
+            .step-subtitle {
+                color: var(--gray);
+                margin-bottom: 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .step-number {
+                display: inline-block;
+                background: var(--primary);
+                color: white;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 28px;
+                margin-right: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .form-container {
+                background: white;
+                border-radius: var(--border-radius);
+                padding: 1.5rem;
+                box-shadow: var(--box-shadow);
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-section-title {
+                font-size: 1.1rem;
+                color: var(--primary);
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid var(--light-gray);
+            }
+            
+            .form-group {
+                margin-bottom: 1.2rem;
             }
             
             .form-label {
                 display: block;
                 margin-bottom: 0.5rem;
                 font-weight: 500;
+                color: #444;
             }
             
             .form-control {
                 width: 100%;
-                padding: 0.75rem;
+                padding: 0.9rem;
                 border: 1px solid #ced4da;
-                border-radius: 0.5rem;
+                border-radius: var(--border-radius);
                 font-size: 1rem;
-                transition: border-color 0.15s ease, box-shadow 0.15s ease;
+                transition: var(--transition);
+                background: white;
             }
             
             .form-control:focus {
@@ -185,19 +261,33 @@
                 box-shadow: 0 0 0 0.2rem rgba(0, 94, 184, 0.25);
             }
             
+            select.form-control {
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 0.7rem center;
+                background-size: 1rem;
+            }
+            
+            .form-hint {
+                font-size: 0.8rem;
+                color: var(--gray);
+                margin-top: 0.3rem;
+            }
+            
             .btn {
                 display: inline-block;
-                font-weight: 400;
+                font-weight: 500;
                 color: #212529;
                 text-align: center;
                 vertical-align: middle;
                 cursor: pointer;
                 background-color: transparent;
                 border: 1px solid transparent;
-                padding: 0.75rem 1.5rem;
+                padding: 0.9rem 1.8rem;
                 font-size: 1rem;
-                border-radius: 0.5rem;
-                transition: all 0.15s ease;
+                border-radius: var(--border-radius);
+                transition: var(--transition);
             }
             
             .btn-primary {
@@ -209,6 +299,19 @@
             .btn-primary:hover {
                 background-color: #004a9b;
                 border-color: #004a9b;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+            
+            .btn-outline {
+                color: var(--primary);
+                background-color: transparent;
+                border: 1px solid var(--primary);
+            }
+            
+            .btn-outline:hover {
+                color: white;
+                background-color: var(--primary);
             }
             
             .btn-block {
@@ -217,7 +320,7 @@
             }
             
             .btn-lg {
-                padding: 1rem 2rem;
+                padding: 1.1rem 2.2rem;
                 font-size: 1.1rem;
             }
             
@@ -225,19 +328,21 @@
             .language-selector {
                 display: flex;
                 justify-content: center;
-                margin: 1rem 0;
+                margin: 1.5rem 0;
             }
             
             .language-btn {
-                padding: 0.5rem 1rem;
+                padding: 0.8rem 1.5rem;
                 margin: 0 0.5rem;
                 border: 2px solid var(--primary);
-                border-radius: 0.5rem;
+                border-radius: var(--border-radius);
                 background: white;
                 color: var(--primary);
                 font-weight: bold;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: var(--transition);
+                flex: 1;
+                max-width: 150px;
             }
             
             .language-btn.active {
@@ -271,12 +376,13 @@
             /* Document Upload */
             .upload-area {
                 border: 2px dashed #ced4da;
-                border-radius: 0.5rem;
-                padding: 2rem;
+                border-radius: var(--border-radius);
+                padding: 2.5rem;
                 text-align: center;
-                margin-bottom: 1rem;
-                transition: all 0.3s ease;
+                margin-bottom: 1.5rem;
+                transition: var(--transition);
                 background: #f8f9fa;
+                cursor: pointer;
             }
             
             .upload-area.active {
@@ -285,7 +391,7 @@
             }
             
             .upload-icon {
-                font-size: 3rem;
+                font-size: 3.5rem;
                 color: var(--gray);
                 margin-bottom: 1rem;
             }
@@ -295,9 +401,9 @@
                 width: 100%;
                 height: 300px;
                 background: #000;
-                border-radius: 0.5rem;
+                border-radius: var(--border-radius);
                 overflow: hidden;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
                 position: relative;
             }
             
@@ -314,23 +420,23 @@
             .camera-controls {
                 display: flex;
                 justify-content: center;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
             }
             
             /* Appointment Calendar */
             .calendar-container {
                 background: white;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                margin-bottom: 1rem;
+                border-radius: var(--border-radius);
+                padding: 1.5rem;
+                box-shadow: var(--box-shadow);
+                margin-bottom: 1.5rem;
             }
             
             .calendar-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
             
             .calendar-grid {
@@ -341,9 +447,14 @@
             
             .calendar-cell {
                 text-align: center;
-                padding: 0.5rem;
+                padding: 0.7rem;
                 border-radius: 50%;
                 cursor: pointer;
+                transition: var(--transition);
+            }
+            
+            .calendar-cell:hover {
+                background: var(--light-gray);
             }
             
             .calendar-cell.active {
@@ -356,21 +467,23 @@
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
-                margin: 1rem 0;
+                margin: 1.5rem 0;
             }
             
             .payment-method {
                 border: 2px solid #ced4da;
-                border-radius: 0.5rem;
-                padding: 1rem;
+                border-radius: var(--border-radius);
+                padding: 1.5rem 1rem;
                 text-align: center;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: var(--transition);
             }
             
             .payment-method.active {
                 border-color: var(--primary);
                 background: rgba(0, 94, 184, 0.05);
+                transform: translateY(-3px);
+                box-shadow: var(--box-shadow);
             }
             
             /* Status Tracker */
@@ -404,6 +517,7 @@
                 align-items: center;
                 margin-right: 1rem;
                 z-index: 1;
+                transition: var(--transition);
             }
             
             .status-step.active .status-icon {
@@ -421,8 +535,8 @@
                 text-align: center;
                 padding: 2rem;
                 background: white;
-                border-radius: 0.5rem;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
                 margin: 2rem 0;
             }
             
@@ -435,16 +549,98 @@
                 justify-content: center;
                 align-items: center;
                 border: 1px solid #ced4da;
-                border-radius: 0.5rem;
+                border-radius: var(--border-radius);
             }
             
             /* Navigation */
             .nav-buttons {
                 display: flex;
                 justify-content: space-between;
-                padding: 1rem;
+                padding: 1.2rem 1.5rem;
                 background: white;
                 box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                bottom: 0;
+                z-index: 5;
+            }
+            
+            /* Footer */
+            .app-footer {
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                padding: 2rem 1.5rem;
+                text-align: center;
+            }
+            
+            .footer-content {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+            
+            .footer-logo {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .footer-title {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .footer-description {
+                margin-bottom: 1.5rem;
+                line-height: 1.6;
+            }
+            
+            .partner-logos {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                margin: 1.5rem 0;
+                flex-wrap: wrap;
+            }
+            
+            .partner-logo {
+                width: 80px;
+                height: 80px;
+                background: white;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.5rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            .partner-logo img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+            
+            .footer-links {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+                flex-wrap: wrap;
+            }
+            
+            .footer-link {
+                color: white;
+                text-decoration: none;
+                transition: var(--transition);
+            }
+            
+            .footer-link:hover {
+                color: var(--accent);
+                text-decoration: underline;
+            }
+            
+            .copyright {
+                margin-top: 1.5rem;
+                font-size: 0.9rem;
+                opacity: 0.8;
             }
             
             /* Animations */
@@ -463,7 +659,294 @@
                 animation: pulse 2s infinite;
             }
             
-            /* Responsive Adjustments */
+            /* Helper Classes */
+            .text-center {
+                text-align: center;
+            }
+            
+            .mt-1 { margin-top: 0.5rem; }
+            .mt-2 { margin-top: 1rem; }
+            .mt-3 { margin-top: 1.5rem; }
+            .mt-4 { margin-top: 2rem; }
+            
+            .mb-1 { margin-bottom: 0.5rem; }
+            .mb-2 { margin-bottom: 1rem; }
+            .mb-3 { margin-bottom: 1.5rem; }
+            .mb-4 { margin-bottom: 2rem; }
+            
+            .small {
+                font-size: 0.8rem;
+            }
+            
+            .alert {
+                padding: 1rem;
+                border-radius: var(--border-radius);
+                margin-bottom: 1rem;
+            }
+            
+            .alert-success {
+                background-color: rgba(40, 167, 69, 0.15);
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            
+            .alert-info {
+                background-color: rgba(23, 162, 184, 0.15);
+                color: #0c5460;
+                border: 1px solid #bee5eb;
+            }
+            
+            /* NEW: Accessibility Controls */
+            .accessibility-controls {
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .accessibility-btn {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: var(--primary);
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                font-size: 1.2rem;
+            }
+            
+            /* NEW: High Contrast Mode */
+            .high-contrast {
+                filter: contrast(1.4);
+                background-color: #000 !important;
+                color: #fff !important;
+            }
+            
+            .high-contrast .form-container,
+            .high-contrast .step,
+            .high-contrast .calendar-container,
+            .high-contrast .qr-container {
+                background-color: #000 !important;
+                color: #fff !important;
+                border: 2px solid #fff;
+            }
+            
+            .high-contrast .form-control {
+                background-color: #000 !important;
+                color: #fff !important;
+                border: 2px solid #fff;
+            }
+            
+            /* NEW: Help Button */
+            .help-button {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: var(--primary);
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 100;
+                font-size: 1.5rem;
+            }
+            
+            /* NEW: Help Panel */
+            .help-panel {
+                position: fixed;
+                bottom: 90px;
+                right: 20px;
+                width: 300px;
+                background: white;
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+                padding: 1.5rem;
+                z-index: 99;
+                display: none;
+            }
+            
+            .help-panel.active {
+                display: block;
+            }
+            
+            /* NEW: NID Preview */
+            .nid-preview {
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                border: 2px solid #ced4da;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .nid-preview::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 40px;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+            }
+            
+            .nid-header {
+                text-align: center;
+                margin-top: 30px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .nid-photo {
+                width: 100px;
+                height: 120px;
+                background: #ddd;
+                margin: 0 auto;
+                border: 2px solid #999;
+            }
+            
+            .nid-details {
+                margin-top: 1.5rem;
+            }
+            
+            .nid-detail-row {
+                display: flex;
+                margin-bottom: 0.5rem;
+                border-bottom: 1px dashed #ddd;
+                padding-bottom: 0.5rem;
+            }
+            
+            .nid-detail-label {
+                font-weight: bold;
+                width: 40%;
+            }
+            
+            .nid-detail-value {
+                width: 60%;
+            }
+            
+            /* NEW: Consent Agreement */
+            .consent-container {
+                max-height: 300px;
+                overflow-y: auto;
+                padding: 1rem;
+                border: 1px solid #ced4da;
+                border-radius: var(--border-radius);
+                margin-bottom: 1.5rem;
+                background: #f8f9fa;
+            }
+            
+            /* NEW: Review Summary */
+            .review-summary {
+                margin-bottom: 1.5rem;
+            }
+            
+            .review-section {
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .review-item {
+                display: flex;
+                margin-bottom: 0.5rem;
+            }
+            
+            .review-label {
+                font-weight: bold;
+                width: 40%;
+            }
+            
+            .review-value {
+                width: 60%;
+            }
+            
+            /* NEW: Offline Indicator */
+            .offline-indicator {
+                position: fixed;
+                top: 70px;
+                right: 20px;
+                background: var(--warning);
+                color: #000;
+                padding: 0.5rem 1rem;
+                border-radius: var(--border-radius);
+                z-index: 100;
+                display: none;
+            }
+            
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .main-content {
+                    padding: 1rem;
+                }
+                
+                .form-container {
+                    padding: 1.2rem;
+                }
+                
+                .step-title {
+                    font-size: 1.3rem;
+                }
+                
+                .payment-methods {
+                    grid-template-columns: 1fr;
+                }
+                
+                .otp-input {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1.2rem;
+                }
+                
+                .partner-logos {
+                    gap: 1rem;
+                }
+                
+                .partner-logo {
+                    width: 60px;
+                    height: 60px;
+                }
+                
+                .footer-links {
+                    flex-direction: column;
+                    gap: 0.8rem;
+                }
+                
+                /* NEW: Responsive adjustments for new elements */
+                .help-panel {
+                    width: 250px;
+                    right: 10px;
+                }
+                
+                .nid-detail-row {
+                    flex-direction: column;
+                }
+                
+                .nid-detail-label,
+                .nid-detail-value {
+                    width: 100%;
+                }
+                
+                .review-item {
+                    flex-direction: column;
+                }
+                
+                .review-label,
+                .review-value {
+                    width: 100%;
+                }
+            }
+            
             @media (max-width: 480px) {
                 .app-title {
                     font-size: 1rem;
@@ -474,14 +957,42 @@
                 }
                 
                 .btn-lg {
-                    padding: 0.75rem 1.5rem;
+                    padding: 1rem 1.8rem;
                     font-size: 1rem;
+                }
+                
+                .language-btn {
+                    padding: 0.6rem 1rem;
+                }
+                
+                .upload-area {
+                    padding: 1.5rem;
+                }
+                
+                .upload-icon {
+                    font-size: 2.5rem;
+                }
+                
+                .calendar-cell {
+                    padding: 0.5rem;
                 }
                 
                 .otp-input {
                     width: 40px;
                     height: 40px;
                     font-size: 1.2rem;
+                }
+                
+                /* NEW: Mobile adjustments for new elements */
+                .help-panel {
+                    width: 90%;
+                    right: 5%;
+                    bottom: 100px;
+                }
+                
+                .accessibility-controls {
+                    bottom: 150px;
+                    right: 10px;
                 }
             }
             
@@ -503,9 +1014,7 @@
                 <header class="app-header">
                     <div class="logo-container">
                         <div class="logo">
-                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M50 10L60 40H90L65 55L75 85L50 70L25 85L35 55L10 40H40L50 10Z" fill="#005eb8"/>
-                            </svg>
+                            <img src="logo-nid-mobile.jpg" alt="PNG NID Logo">
                         </div>
                         <div>
                             <h1 class="app-title">PNG NID Registration</h1>
@@ -514,270 +1023,879 @@
                     </div>
                 </header>
                 
+                <!-- NEW: Offline Indicator -->
+                <div class="offline-indicator" id="offline-indicator">
+                    <i class="fas fa-wifi"></i> Offline Mode - Data will sync when connection is restored
+                </div>
+                
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progress-fill"></div>
                     </div>
                     <div class="step-indicator">
                         <span class="step-active">Start</span>
+                        <span>Verify</span>
+                        <span>Profile</span>
+                        <span>Consent</span> <!-- NEW: Added Consent step -->
                         <span>Details</span>
+                        <span>Address</span>
                         <span>Documents</span>
-                        <span>Biometrics</span>
+                        <span>Selfie</span>
+                        <span>Review</span> <!-- NEW: Added Review step -->
+                        <span>Appointment</span>
+                        <span>Payment</span>
                         <span>Finish</span>
+                        <span>MFA</span> <!-- NEW: Added MFA step -->
                     </div>
                 </div>
                 
                 <main class="main-content" id="main-content">
                     <!-- Step 1: Language Selection -->
                     <div class="step step-active" id="step-1">
-                        <div class="text-center">
-                            <h2>Welcome to PNG NID Registration</h2>
-                            <p>Please select your preferred language</p>
-                            
-                            <div class="language-selector">
-                                <button class="language-btn active" data-lang="en">English</button>
-                                <button class="language-btn" data-lang="tp">Tok Pisin</button>
-                            </div>
-                            
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-lg btn-block" onclick="nextStep()">
-                                    Register for NID
-                                </button>
-                            </div>
-                            
-                            <p>Partnership with Digicel PNG and UNDP</p>
+                        <h2 class="step-title"><span class="step-number">1</span>Welcome to PNG NID Registration</h2>
+                        <p class="step-subtitle">Please select your preferred language to continue</p>
+                        
+                        <div class="language-selector">
+                            <button class="language-btn active" data-lang="en">English</button>
+                            <button class="language-btn" data-lang="tp">Tok Pisin</button>
                         </div>
+                        
+                        <!-- NEW: Accessibility Options -->
+                        <div class="form-container">
+                            <h3 class="form-section-title">Accessibility Options</h3>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="high-contrast" class="form-check-input">
+                                    <label for="high-contrast" class="form-check-label">High Contrast Mode</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="large-text" class="form-check-input">
+                                    <label for="large-text" class="form-check-label">Large Text Mode</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="screen-reader" class="form-check-input">
+                                    <label for="screen-reader" class="form-check-label">Screen Reader Support</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <button class="btn btn-primary btn-lg btn-block" onclick="nextStep()">
+                                Register for NID
+                            </button>
+                        </div>
+                        
+                        <p class="text-center mt-3">Partnership with Digicel PNG and UNDP</p>
                     </div>
                     
                     <!-- Step 2: Mobile Verification -->
                     <div class="step" id="step-2">
-                        <h2>Mobile Number Verification</h2>
-                        <p>We'll use your Digicel number for identity verification</p>
+                        <h2 class="step-title"><span class="step-number">2</span>Mobile Number Verification</h2>
+                        <p class="step-subtitle">We'll use your Digicel number for identity verification</p>
                         
-                        <div class="form-group">
-                            <label class="form-label">Digicel PNG Mobile Number</label>
-                            <input type="tel" class="form-control" placeholder="7XXXXXXX" value="74567890" readonly>
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="form-label">Digicel PNG Mobile Number</label>
+                                <input type="tel" class="form-control" placeholder="7XXXXXXX" value="74567890" readonly>
+                                <p class="form-hint">This is the number associated with your SIM card</p>
+                            </div>
+                            
+                            <p class="mb-2">An OTP has been sent to your number</p>
+                            
+                            <div class="otp-container">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" onclick="verifyOTP()">Verify OTP</button>
+                            </div>
+                            
+                            <p class="text-center">Didn't receive the code? <a href="#" onclick="resendOTP()">Resend</a></p>
                         </div>
-                        
-                        <p>An OTP has been sent to your number</p>
-                        
-                        <div class="otp-container">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" onclick="verifyOTP()">Verify OTP</button>
-                        </div>
-                        
-                        <p>Didn't receive the code? <a href="#" onclick="resendOTP()">Resend</a></p>
                     </div>
                     
-                    <!-- Additional steps would be defined here -->
-                    <!-- Step 3: Personal Details -->
+                    <!-- Step 3: Create Profile -->
                     <div class="step" id="step-3">
-                        <h2>Personal Information</h2>
+                        <h2 class="step-title"><span class="step-number">3</span>Create Your Profile</h2>
+                        <p class="step-subtitle">Set up your account security and confirm your details</p>
                         
-                        <div class="form-group">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" placeholder="First Name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Middle Name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Last Name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Date of Birth</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Place of Birth</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Mother's Name</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Father's Name</label>
-                            <input type="text" class="form-control">
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" value="John Smith" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Mobile Number</label>
+                                <input type="tel" class="form-control" value="74567890" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Create 6-digit App PIN</label>
+                                <input type="password" class="form-control" placeholder="Enter 6-digit PIN" maxlength="6">
+                                <p class="form-hint">This PIN will be used to secure your app access</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Confirm PIN</label>
+                                <input type="password" class="form-control" placeholder="Re-enter 6-digit PIN" maxlength="6">
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Step 4: Document Upload -->
+                    <!-- NEW: Step 4 - Data Privacy and Consent Agreement -->
                     <div class="step" id="step-4">
-                        <h2>Document Upload</h2>
-                        <p>Please upload supporting documents</p>
+                        <h2 class="step-title"><span class="step-number">4</span>Data Privacy & Consent</h2>
+                        <p class="step-subtitle">Please read and agree to our data privacy policy</p>
                         
-                        <div class="upload-area" id="upload-area">
-                            <div class="upload-icon">📄</div>
-                            <p>Tap to upload birth certificate or supporting letter</p>
-                            <p class="small">Supported formats: JPG, PNG, PDF</p>
+                        <div class="form-container">
+                            <div class="consent-container">
+                                <h3>PNG NID Data Privacy and Consent Agreement</h3>
+                                <p>By proceeding with your National ID registration, you consent to the collection, processing, and storage of your personal data by the Papua New Guinea Civil & Identity Registry (PNGCIR) for the following purposes:</p>
+                                
+                                <ol>
+                                    <li><strong>Identity Verification:</strong> Your data will be used to verify your identity and establish your official record in the national database.</li>
+                                    <li><strong>Service Delivery:</strong> Your information will facilitate access to government services, voting, banking, and other essential services.</li>
+                                    <li><strong>Security Purposes:</strong> Data may be used for national security, fraud prevention, and law enforcement purposes as authorized by law.</li>
+                                    <li><strong>Statistical Analysis:</strong> Anonymous, aggregated data may be used for statistical reporting and national planning.</li>
+                                </ol>
+                                
+                                <h4>Data Protection</h4>
+                                <p>PNGCIR is committed to protecting your personal information:</p>
+                                <ul>
+                                    <li>All data is stored securely with encryption and access controls</li>
+                                    <li>Your information will only be shared with authorized entities as permitted by law</li>
+                                    <li>You have the right to access and correct your personal information</li>
+                                    <li>Data will be retained in accordance with PNG data protection regulations</li>
+                                </ul>
+                                
+                                <p>By consenting below, you acknowledge that you have read and understood this privacy notice and agree to the collection and use of your personal data as described.</p>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <div class="form-check">
+                                    <input type="checkbox" id="consent-check" class="form-check-input">
+                                    <label for="consent-check" class="form-check-label">I consent to the collection and use of my personal data as described above</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="terms-check" class="form-check-input">
+                                    <label for="terms-check" class="form-check-label">I agree to the Terms of Service</label>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" onclick="simulateUpload()">Upload Document</button>
-                        </div>
-                        
-                        <div id="upload-status"></div>
                     </div>
                     
-                    <!-- Step 5: Selfie Capture -->
+                    <!-- Step 5: Personal Details -->
                     <div class="step" id="step-5">
-                        <h2>Facial Verification</h2>
-                        <p>Please take a selfie for identity verification</p>
+                        <h2 class="step-title"><span class="step-number">5</span>Personal Information</h2>
+                        <p class="step-subtitle">Enter your personal details as they appear on official documents</p>
                         
-                        <div class="camera-container">
-                            <div class="camera-placeholder">
-                                <div class="text-center">
-                                    <div style="font-size: 4rem;">📷</div>
-                                    <p>Camera Preview</p>
+                        <div class="form-container">
+                            <h3 class="form-section-title">Name Details</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" placeholder="Enter first name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" placeholder="Enter middle name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" placeholder="Enter last name">
+                            </div>
+                            
+                            <h3 class="form-section-title">Personal Details</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Place of Birth</label>
+                                <input type="text" class="form-control" placeholder="Enter place of birth">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <select class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            
+                            <h3 class="form-section-title">Parents' Information</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Mother's Full Name</label>
+                                <input type="text" class="form-control" placeholder="Enter mother's full name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Father's Full Name</label>
+                                <input type="text" class="form-control" placeholder="Enter father's full name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 6: Address Information -->
+                    <div class="step" id="step-6">
+                        <h2 class="step-title"><span class="step-number">6</span>Address Information</h2>
+                        <p class="step-subtitle">Provide your current residential address details</p>
+                        
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="form-label">Residential Address</label>
+                                <input type="text" class="form-control" placeholder="Enter street address">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Town/City</label>
+                                <input type="text" class="form-control" placeholder="Enter town or city">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Province</label>
+                                <select class="form-control">
+                                    <option value="">Select Province</option>
+                                    <option value="ncd">National Capital District</option>
+                                    <option value="central">Central</option>
+                                    <option value="morobe">Morobe</option>
+                                    <option value="eastern-highlands">Eastern Highlands</option>
+                                    <option value="simbu">Simbu</option>
+                                    <option value="western-highlands">Western Highlands</option>
+                                    <option value="eng">Enga</option>
+                                    <option value="west">West</option>
+                                    <option value="gulf">Gulf</option>
+                                    <option value="milne">Milne Bay</option>
+                                    <option value="oro">Oro</option>
+                                    <option value="southern-highlands">Southern Highlands</option>
+                                    <option value="east-new-britain">East New Britain</option>
+                                    <option value="west-new-britain">West New Britain</option>
+                                    <option value="new-ireland">New Ireland</option>
+                                    <option value="manus">Manus</option>
+                                    <option value="sandaun">Sandaun</option>
+                                    <option value="east-sepik">East Sepik</option>
+                                    <option value="madang">Madang</option>
+                                    <option value="autonomous-region">Autonomous Region of Bougainville</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" placeholder="Enter postal code">
+                            </div>
+                            
+                            <h3 class="form-section-title">Village/Ward Information (if applicable)</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Village Name</label>
+                                <input type="text" class="form-control" placeholder="Enter village name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Ward Number</label>
+                                <input type="text" class="form-control" placeholder="Enter ward number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">LLG (Local Level Government)</label>
+                                <input type="text" class="form-control" placeholder="Enter LLG name">
+                            </div>
+                            
+                            <h3 class="form-section-title">Alternate Contact</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Alternate Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter alternate phone number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Email Address (optional)</label>
+                                <input type="email" class="form-control" placeholder="Enter email address">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 7: Document Upload -->
+                    <div class="step" id="step-7">
+                        <h2 class="step-title"><span class="step-number">7</span>Document Upload</h2>
+                        <p class="step-subtitle">Upload photos of your supporting documents</p>
+                        
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="form-label">Select Document Type</label>
+                                <select class="form-control" id="doc-type">
+                                    <option value="">Select document type</option>
+                                    <option value="birth-certificate">Birth Certificate</option>
+                                    <option value="ward-councillor">Letter from Ward Councillor</option>
+                                    <option value="passport">Passport</option>
+                                    <option value="drivers-license">Driver's License</option>
+                                    <option value="other">Other Supporting Document</option>
+                                </select>
+                            </div>
+                            
+                            <div class="upload-area" id="upload-area">
+                                <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <p>Tap to upload your document</p>
+                                <p class="small">Supported formats: JPG, PNG, PDF - Max 5MB</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" onclick="simulateUpload()">Upload Document</button>
+                            </div>
+                            
+                            <div id="upload-status"></div>
+                            
+                            <div class="form-group mt-3">
+                                <p class="form-hint">Required documents based on your application:</p>
+                                <ul class="form-hint">
+                                    <li>Birth Certificate (if available)</li>
+                                    <li>Letter from Ward Councillor</li>
+                                    <li>Any other government-issued ID</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 8: Selfie Capture -->
+                    <div class="step" id="step-8">
+                        <h2 class="step-title"><span class="step-number">8</span>Facial Verification</h2>
+                        <p class="step-subtitle">Take a selfie for identity verification and liveness check</p>
+                        
+                        <div class="form-container">
+                            <div class="camera-container">
+                                <div class="camera-placeholder">
+                                    <div class="text-center">
+                                        <div style="font-size: 4rem;"><i class="fas fa-camera"></i></div>
+                                        <p>Camera Preview</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="camera-controls">
+                                <button class="btn btn-primary" onclick="captureSelfie()"><i class="fas fa-camera me-2"></i>Capture Selfie</button>
+                            </div>
+                            
+                            <div id="liveness-check" class="mt-3" style="display: none;">
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>Liveness verified successfully!
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <p class="form-hint">Instructions:</p>
+                                <ul class="form-hint">
+                                    <li>Ensure good lighting</li>
+                                    <li>Look directly at the camera</li>
+                                    <li>Remove sunglasses or hats</li>
+                                    <li>Keep a neutral expression</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Step 9 - Information Verification -->
+                    <div class="step" id="step-9">
+                        <h2 class="step-title"><span class="step-number">9</span>Review Your Information</h2>
+                        <p class="step-subtitle">Please verify all information is correct before submission</p>
+                        
+                        <div class="form-container">
+                            <div class="review-summary">
+                                <div class="review-section">
+                                    <h3 class="form-section-title">Personal Details</h3>
+                                    <div class="review-item">
+                                        <div class="review-label">Full Name:</div>
+                                        <div class="review-value">John Smith</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Date of Birth:</div>
+                                        <div class="review-value">15/05/1985</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Place of Birth:</div>
+                                        <div class="review-value">Port Moresby</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Gender:</div>
+                                        <div class="review-value">Male</div>
+                                    </div>
+                                    <button class="btn btn-outline btn-block mt-2" onclick="editSection('personal')">Edit Personal Details</button>
+                                </div>
+                                
+                                <div class="review-section">
+                                    <h3 class="form-section-title">Address Information</h3>
+                                    <div class="review-item">
+                                        <div class="review-label">Residential Address:</div>
+                                        <div class="review-value">123 Main Street, Boroko</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Town/City:</div>
+                                        <div class="review-value">Port Moresby</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Province:</div>
+                                        <div class="review-value">National Capital District</div>
+                                    </div>
+                                    <button class="btn btn-outline btn-block mt-2" onclick="editSection('address')">Edit Address</button>
+                                </div>
+                                
+                                <div class="review-section">
+                                    <h3 class="form-section-title">Documents Uploaded</h3>
+                                    <div class="review-item">
+                                        <div class="review-label">Birth Certificate:</div>
+                                        <div class="review-value"><i class="fas fa-check-circle text-success"></i> Uploaded</div>
+                                    </div>
+                                    <div class="review-item">
+                                        <div class="review-label">Ward Letter:</div>
+                                        <div class="review-value"><i class="fas fa-check-circle text-success"></i> Uploaded</div>
+                                    </div>
+                                    <button class="btn btn-outline btn-block mt-2" onclick="editSection('documents')">Edit Documents</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="accuracy-check" class="form-check-input">
+                                    <label for="accuracy-check" class="form-check-label">I confirm that all information provided is accurate to the best of my knowledge</label>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="camera-controls">
-                            <button class="btn btn-primary" onclick="captureSelfie()">Capture Selfie</button>
-                        </div>
-                        
-                        <div id="liveness-check" class="mt-3" style="display: none;">
-                            <div class="alert alert-success">
-                                Liveness verified successfully!
+                        <!-- NEW: Digital NID Preview -->
+                        <div class="form-container">
+                            <h3 class="form-section-title">Your Digital NID Preview</h3>
+                            <div class="nid-preview">
+                                <div class="nid-header">
+                                    <h4>PAPUA NEW GUINEA</h4>
+                                    <p>National Identification Card</p>
+                                </div>
+                                
+                                <div class="nid-photo"></div>
+                                
+                                <div class="nid-details">
+                                    <div class="nid-detail-row">
+                                        <div class="nid-detail-label">Name:</div>
+                                        <div class="nid-detail-value">SMITH, John</div>
+                                    </div>
+                                    <div class="nid-detail-row">
+                                        <div class="nid-detail-label">NID No:</div>
+                                        <div class="nid-detail-value">NID-2025-1234567</div>
+                                    </div>
+                                    <div class="nid-detail-row">
+                                        <div class="nid-detail-label">DOB:</div>
+                                        <div class="nid-detail-value">15/05/1985</div>
+                                    </div>
+                                    <div class="nid-detail-row">
+                                        <div class="nid-detail-label">Gender:</div>
+                                        <div class="nid-detail-value">Male</div>
+                                    </div>
+                                    <div class="nid-detail-row">
+                                        <div class="nid-detail-label">Province:</div>
+                                        <div class="nid-detail-value">NCD</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Step 6: Appointment Scheduling -->
-                    <div class="step" id="step-6">
-                        <h2>Biometrics Appointment</h2>
-                        <p>Please select a date and location for your biometrics collection</p>
+                    <!-- Step 10: Appointment Scheduling -->
+                    <div class="step" id="step-10">
+                        <h2 class="step-title"><span class="step-number">10</span>Biometrics Appointment</h2>
+                        <p class="step-subtitle">Schedule your appointment for biometrics collection</p>
                         
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <button class="btn">&lt;</button>
-                                <h4>November 2023</h4>
-                                <button class="btn">&gt;</button>
+                        <div class="form-container">
+                            <div class="calendar-container">
+                                <div class="calendar-header">
+                                    <button class="btn btn-outline">&lt;</button>
+                                    <h4>November 2025</h4>
+                                    <button class="btn btn-outline">&gt;</button>
+                                </div>
+                                
+                                <div class="calendar-grid">
+                                    <div class="text-center"><strong>S</strong></div>
+                                    <div class="text-center"><strong>M</strong></div>
+                                    <div class="text-center"><strong>T</strong></div>
+                                    <div class="text-center"><strong>W</strong></div>
+                                    <div class="text-center"><strong>T</strong></div>
+                                    <div class="text-center"><strong>F</strong></div>
+                                    <div class="text-center"><strong>S</strong></div>
+                                    
+                                    <!-- Calendar days would be generated here -->
+                                    <div class="calendar-cell">27</div>
+                                    <div class="calendar-cell">28</div>
+                                    <div class="calendar-cell">29</div>
+                                    <div class="calendar-cell">30</div>
+                                    <div class="calendar-cell">31</div>
+                                    <div class="calendar-cell">1</div>
+                                    <div class="calendar-cell">2</div>
+                                    
+                                    <div class="calendar-cell">3</div>
+                                    <div class="calendar-cell">4</div>
+                                    <div class="calendar-cell">5</div>
+                                    <div class="calendar-cell">6</div>
+                                    <div class="calendar-cell">7</div>
+                                    <div class="calendar-cell">8</div>
+                                    <div class="calendar-cell">9</div>
+                                    
+                                    <div class="calendar-cell">10</div>
+                                    <div class="calendar-cell">11</div>
+                                    <div class="calendar-cell">12</div>
+                                    <div class="calendar-cell active">13</div>
+                                    <div class="calendar-cell">14</div>
+                                    <div class="calendar-cell">15</div>
+                                    <div class="calendar-cell">16</div>
+                                    
+                                    <div class="calendar-cell">17</div>
+                                    <div class="calendar-cell">18</div>
+                                    <div class="calendar-cell">19</div>
+                                    <div class="calendar-cell">20</div>
+                                    <div class="calendar-cell">21</div>
+                                    <div class="calendar-cell">22</div>
+                                    <div class="calendar-cell">23</div>
+                                    
+                                    <div class="calendar-cell">24</div>
+                                    <div class="calendar-cell">25</div>
+                                    <div class="calendar-cell">26</div>
+                                    <div class="calendar-cell">27</div>
+                                    <div class="calendar-cell">28</div>
+                                    <div class="calendar-cell">29</div>
+                                    <div class="calendar-cell">30</div>
+                                </div>
                             </div>
                             
-                            <div class="calendar-grid">
-                                <div class="text-center"><strong>S</strong></div>
-                                <div class="text-center"><strong>M</strong></div>
-                                <div class="text-center"><strong>T</strong></div>
-                                <div class="text-center"><strong>W</strong></div>
-                                <div class="text-center"><strong>T</strong></div>
-                                <div class="text-center"><strong>F</strong></div>
-                                <div class="text-center"><strong>S</strong></div>
-                                
-                                <!-- Calendar days would be generated here -->
-                                <div class="calendar-cell">27</div>
-                                <div class="calendar-cell">28</div>
-                                <div class="calendar-cell">29</div>
-                                <div class="calendar-cell">30</div>
-                                <div class="calendar-cell">31</div>
-                                <div class="calendar-cell">1</div>
-                                <div class="calendar-cell">2</div>
-                                
-                                <div class="calendar-cell">3</div>
-                                <div class="calendar-cell">4</div>
-                                <div class="calendar-cell">5</div>
-                                <div class="calendar-cell">6</div>
-                                <div class="calendar-cell">7</div>
-                                <div class="calendar-cell">8</div>
-                                <div class="calendar-cell">9</div>
-                                
-                                <div class="calendar-cell">10</div>
-                                <div class="calendar-cell">11</div>
-                                <div class="calendar-cell">12</div>
-                                <div class="calendar-cell active">13</div>
-                                <div class="calendar-cell">14</div>
-                                <div class="calendar-cell">15</div>
-                                <div class="calendar-cell">16</div>
+                            <div class="form-group">
+                                <label class="form-label">Select Time Slot</label>
+                                <select class="form-control">
+                                    <option value="">Select available time</option>
+                                    <option value="9:00">9:00 AM</option>
+                                    <option value="9:30">9:30 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="10:30">10:30 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="13:30">1:30 PM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="14:30">2:30 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="15:30">3:30 PM</option>
+                                </select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Select Location</label>
-                            <select class="form-control">
-                                <option>Port Moresby NID Office</option>
-                                <option>Lae Regional Office</option>
-                                <option>Mt Hagen Provincial Office</option>
-                                <option>Kokopo Service Center</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" onclick="scheduleAppointment()">Confirm Appointment</button>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Select Location</label>
+                                <select class="form-control">
+                                    <option value="">Select NID office location</option>
+                                    <option>Port Moresby NID Office</option>
+                                    <option>Lae Regional Office</option>
+                                    <option>Mt Hagen Provincial Office</option>
+                                    <option>Kokopo Service Center</option>
+                                    <option>Goroka Sub-Office</option>
+                                    <option>Alotau Sub-Office</option>
+                                    <option>Daru Sub-Office</option>
+                                    <option>Wewak Sub-Office</option>
+                                    <option>Madang Sub-Office</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" onclick="scheduleAppointment()">Confirm Appointment</button>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>You will receive an SMS confirmation with your appointment details.
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Step 7: Payment -->
-                    <div class="step" id="step-7">
-                        <h2>Payment</h2>
-                        <p>Registration fee: PGK 10.00</p>
+                    <!-- Step 11: Payment -->
+                    <div class="step" id="step-11">
+                        <h2 class="step-title"><span class="step-number">11</span>Payment</h2>
+                        <p class="step-subtitle">Pay your registration fee to complete the application</p>
                         
-                        <div class="payment-methods">
-                            <div class="payment-method active">
-                                <div style="font-size: 2rem;">📱</div>
-                                <p>Mobile Money</p>
+                        <div class="form-container">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>NID Registration Fee: <strong>PGK 10.00</strong>
                             </div>
                             
-                            <div class="payment-method">
-                                <div style="font-size: 2rem;">💳</div>
-                                <p>Credit Card</p>
+                            <h3 class="form-section-title">Select Payment Method</h3>
+                            
+                            <div class="payment-methods">
+                                <div class="payment-method active">
+                                    <div style="font-size: 2.5rem;"><i class="fas fa-mobile-alt"></i></div>
+                                    <p>Mobile Banking</p>
+                                </div>
+                                
+                                <div class="payment-method">
+                                    <div style="font-size: 2.5rem;"><i class="fas fa-credit-card"></i></div>
+                                    <p>Credit Card</p>
+                                </div>
+                                
+                                <div class="payment-method">
+                                    <div style="font-size: 2.5rem;"><i class="fas fa-qrcode"></i></div>
+                                    <p>QR/Bank Transfer</p>
+                                </div>
+                                
+                                <div class="payment-method">
+                                    <div style="font-size: 2.5rem;"><i class="fas fa-money-bill-wave"></i></div>
+                                    <p>Cash at Agent</p>
+                                </div>
+
+                                <div class="payment-method">
+                                    <div style="font-size: 2.5rem;"><i class="fas fa-university"></i></div>
+                                    <p>BSP Pay</p>
+                                </div>
                             </div>
                             
-                            <div class="payment-method">
-                                <div style="font-size: 2rem;">🏦</div>
-                                <p>Bank Transfer</p>
+                            <div class="form-group mt-3">
+                                <button class="btn btn-primary btn-block" onclick="processPayment()">Pay Now</button>
                             </div>
                             
-                            <div class="payment-method">
-                                <div style="font-size: 2rem;">💵</div>
-                                <p>Cash at Agent</p>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-shield-alt me-2"></i>All payments are secure and encrypted.
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" onclick="processPayment()">Pay Now</button>
                         </div>
                     </div>
                     
-                    <!-- Step 8: Submission Complete -->
-                    <div class="step" id="step-8">
+                    <!-- Step 12: Submission Complete -->
+                    <div class="step" id="step-12">
                         <div class="text-center">
-                            <div style="font-size: 4rem; color: var(--success);">✅</div>
-                            <h2>Application Submitted</h2>
-                            <p>Your NID application has been successfully submitted</p>
+                            <div style="font-size: 5rem; color: var(--success);"><i class="fas fa-check-circle"></i></div>
+                            <h2 class="step-title">Application Submitted</h2>
+                            <p class="step-subtitle">Your NID application has been successfully submitted</p>
+                            
+                            <div class="form-container">
+                                <div class="status-tracker">
+                                    <div class="status-step completed">
+                                        <div class="status-icon"><i class="fas fa-check"></i></div>
+                                        <div>Application Submitted</div>
+                                    </div>
+                                    
+                                    <div class="status-step active">
+                                        <div class="status-icon">2</div>
+                                        <div>Under Review</div>
+                                    </div>
+                                    
+                                    <div class="status-step">
+                                        <div class="status-icon">3</div>
+                                        <div>Biometrics Appointment</div>
+                                    </div>
+                                    
+                                    <div class="status-step">
+                                        <div class="status-icon">4</div>
+                                        <div>Card Production</div>
+                                    </div>
+                                    
+                                    <div class="status-step">
+                                        <div class="status-icon">5</div>
+                                        <div>Ready for Pickup</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-envelope me-2"></i>You will receive SMS updates on your application status.
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <p>Estimated processing time: <strong>7-10 working days</strong></p>
+                                    <p>Reference Number: <strong>NID20251115-74567890</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Step 13 - Multi-factor Authentication Setup -->
+                    <div class="step" id="step-13">
+                        <h2 class="step-title"><span class="step-number">13</span>Enhanced Security Setup</h2>
+                        <p class="step-subtitle">Set up multi-factor authentication for your digital ID</p>
+                        
+                        <div class="form-container">
+                            <div class="alert alert-info">
+                                <i class="fas fa-shield-alt me-2"></i>Multi-factor authentication adds an extra layer of security to your digital identity.
+                            </div>
+                            
+                            <h3 class="form-section-title">Authentication Methods</h3>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="mfa-sms" class="form-check-input" checked>
+                                    <label for="mfa-sms" class="form-check-label">SMS Verification</label>
+                                    <p class="form-hint">Receive OTP codes via SMS to your registered mobile number</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="mfa-email" class="form-check-input">
+                                    <label for="mfa-email" class="form-check-label">Email Verification</label>
+                                    <p class="form-hint">Receive security codes via email</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="mfa-authenticator" class="form-check-input">
+                                    <label for="mfa-authenticator" class="form-check-label">Authenticator App</label>
+                                    <p class="form-hint">Use an authenticator app like Google Authenticator</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="mfa-biometric" class="form-check-input">
+                                    <label for="mfa-biometric" class="form-check-label">Biometric Authentication</label>
+                                    <p class="form-hint">Use fingerprint or facial recognition when available</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <button class="btn btn-primary btn-block" onclick="setupMFA()">Set Up Security</button>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>You can change these settings anytime in the app's security section.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 14: Back Office Review -->
+                    <div class="step" id="step-14">
+                        <h2 class="step-title"><span class="step-number">14</span>Application Review</h2>
+                        <p class="step-subtitle">Your application is being processed by our team</p>
+                        
+                        <div class="form-container text-center">
+                            <div style="font-size: 4rem; color: var(--primary);" class="mb-3">
+                                <i class="fas fa-tasks"></i>
+                            </div>
                             
                             <div class="status-tracker">
                                 <div class="status-step completed">
-                                    <div class="status-icon">✓</div>
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
                                     <div>Application Submitted</div>
                                 </div>
                                 
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Initial Screening</div>
+                                </div>
+                                
                                 <div class="status-step active">
-                                    <div class="status-icon">2</div>
-                                    <div>Under Review</div>
-                                </div>
-                                
-                                <div class="status-step">
                                     <div class="status-icon">3</div>
-                                    <div>Biometrics Appointment</div>
+                                    <div>Document Verification</div>
                                 </div>
                                 
                                 <div class="status-step">
+                                    <div class="status-icon">4</div>
+                                    <div>Data Quality Check</div>
+                                </div>
+                                
+                                <div class="status-step">
+                                    <div class="status-icon">5</div>
+                                    <div>Duplicate Check</div>
+                                </div>
+                                
+                                <div class="status-step">
+                                    <div class="status-icon">6</div>
+                                    <div>Approval</div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>This process typically takes 2-3 business days. You will be notified if additional information is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 15: Biometrics Completion -->
+                    <div class="step" id="step-15">
+                        <h2 class="step-title"><span class="step-number">15</span>Biometrics Collection</h2>
+                        <p class="step-subtitle">Complete your biometrics at the scheduled appointment</p>
+                        
+                        <div class="form-container">
+                            <div class="alert alert-success">
+                                <i class="fas fa-calendar-check me-2"></i>Your appointment has been scheduled
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Appointment Date</label>
+                                <input type="text" class="form-control" value="November 13, 2025" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Time</label>
+                                <input type="text" class="form-control" value="10:00 AM" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" value="Port Moresby NID Office" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" value="First Floor, MMI Building, Downtown Port Moresby" readonly>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <h4><i class="fas fa-info-circle me-2"></i>What to bring:</h4>
+                                <ul class="mb-0 mt-2">
+                                    <li>Your appointment reference number</li>
+                                    <li>Original supporting documents</li>
+                                    <li>Your mobile phone with this app installed</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <button class="btn btn-outline btn-block" onclick="simulateBiometrics()">Simulate Biometrics Completion</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 16: Approval and Production -->
+                    <div class="step" id="step-16">
+                        <h2 class="step-title"><span class="step-number">16</span>Application Approved</h2>
+                        <p class="step-subtitle">Your NID card is now in production</p>
+                        
+                        <div class="form-container text-center">
+                            <div style="font-size: 4rem; color: var(--success);" class="mb-3">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            
+                            <div class="status-tracker">
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Application Submitted</div>
+                                </div>
+                                
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Review Process</div>
+                                </div>
+                                
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Biometrics Completed</div>
+                                </div>
+                                
+                                <div class="status-step active">
                                     <div class="status-icon">4</div>
                                     <div>Card Production</div>
                                 </div>
@@ -788,53 +1906,230 @@
                                 </div>
                             </div>
                             
-                            <p>You will receive SMS updates on your application status</p>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>Your NID card is now being printed and personalized. This process typically takes 3-5 business days.
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Step 9: Ready for Pickup -->
-                    <div class="step" id="step-9">
-                        <div class="text-center">
-                            <div style="font-size: 4rem; color: var(--success);">🎉</div>
-                            <h2>Your NID is Ready!</h2>
-                            <p>Your National Identification Card is ready for pickup</p>
-                            
-                            <div class="qr-container">
-                                <div class="qr-code">
-                                    <div style="font-size: 3rem;">🔒</div>
-                                </div>
-                                <p class="mt-3">Bring this QR code and your PIN to collect your card</p>
-                                <p>Your PIN: <strong>1A9B2C</strong></p>
+                    <!-- Step 17: Ready for Pickup -->
+                    <div class="step" id="step-17">
+                        <h2 class="step-title"><span class="step-number">17</span>Ready for Pickup</h2>
+                        <p class="step-subtitle">Your NID card is ready for collection</p>
+                        
+                        <div class="form-container text-center">
+                            <div style="font-size: 4rem; color: var(--success);" class="mb-3">
+                                <i class="fas fa-id-card"></i>
                             </div>
                             
+                            <div class="status-tracker">
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Application Submitted</div>
+                                </div>
+                                
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Review Process</div>
+                                </div>
+                                
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Biometrics Completed</div>
+                                </div>
+                                
+                                <div class="status-step completed">
+                                    <div class="status-icon"><i class="fas fa-check"></i></div>
+                                    <div>Card Production</div>
+                                </div>
+                                
+                                <div class="status-step active">
+                                    <div class="status-icon">5</div>
+                                    <div>Ready for Pickup</div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-success mt-3">
+                                <i class="fas fa-check-circle me-2"></i>Your National ID card is ready for collection!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 18: Pickup Scheduling -->
+                    <div class="step" id="step-18">
+                        <h2 class="step-title"><span class="step-number">18</span>Schedule Pickup</h2>
+                        <p class="step-subtitle">Select where and when you want to pick up your NID card</p>
+                        
+                        <div class="form-container">
                             <div class="form-group">
                                 <label class="form-label">Select Pickup Location</label>
                                 <select class="form-control">
+                                    <option value="">Select pickup location</option>
                                     <option>Port Moresby NID Office</option>
                                     <option>Digicel Store - Boroko</option>
                                     <option>Digicel Store - Waigani</option>
                                     <option>Digicel Store - Gerehu</option>
+                                    <option>Digicel Store - Gordons</option>
+                                    <option>Digicel Store - Vision City</option>
                                 </select>
                             </div>
                             
                             <div class="form-group">
+                                <label class="form-label">Preferred Pickup Date</label>
+                                <input type="date" class="form-control" min="2025-11-20">
+                            </div>
+                            
+                            <div class="form-group">
                                 <button class="btn btn-primary btn-block" onclick="confirmPickup()">Confirm Pickup Location</button>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>You will receive a confirmation SMS with your pickup details and a QR code for collection.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 19: Collection Complete -->
+                    <div class="step" id="step-19">
+                        <div class="text-center">
+                            <div style="font-size: 5rem; color: var(--success);" class="mb-3">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <h2 class="step-title">Collection Complete</h2>
+                            <p class="step-subtitle">Your National ID card has been successfully issued</p>
+                            
+                            <div class="form-container">
+                                <div class="qr-container">
+                                    <div class="qr-code">
+                                        <div style="font-size: 4rem;"><i class="fas fa-qrcode"></i></div>
+                                    </div>
+                                    <p class="mt-3">Your collection QR code</p>
+                                    <p>Your PIN: <strong>1A9B2C</strong></p>
+                                </div>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <h4><i class="fas fa-info-circle me-2"></i>What to bring when collecting:</h4>
+                                    <ul class="mb-0 mt-2">
+                                        <li>This QR code (display on your phone)</li>
+                                        <li>Your collection PIN</li>
+                                        <li>Original supporting documents</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h4>Congratulations!</h4>
+                                    <p>You have successfully completed the NID registration process. Your National Identification Card is an important document that proves your identity and citizenship.</p>
+                                    
+                                    <div class="alert alert-success mt-3">
+                                        <i class="fas fa-shield-alt me-2"></i>Your personal data is protected and secure in accordance with PNG data protection regulations.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </main>
                 
                 <div class="nav-buttons">
-                    <button class="btn" id="prev-btn" onclick="prevStep()" disabled>Previous</button>
+                    <button class="btn btn-outline" id="prev-btn" onclick="prevStep()" disabled>Previous</button>
                     <button class="btn btn-primary" id="next-btn" onclick="nextStep()">Next</button>
                 </div>
+                
+                <!-- NEW: Accessibility Controls -->
+                <div class="accessibility-controls">
+                    <div class="accessibility-btn" onclick="toggleHighContrast()">
+                        <i class="fas fa-adjust"></i>
+                    </div>
+                    <div class="accessibility-btn" onclick="increaseTextSize()">
+                        <i class="fas fa-text-height"></i>
+                    </div>
+                    <div class="accessibility-btn" onclick="decreaseTextSize()">
+                        <i class="fas fa-text-width"></i>
+                    </div>
+                </div>
+                
+                <!-- NEW: Help Button -->
+                <div class="help-button" onclick="toggleHelp()">
+                    <i class="fas fa-question"></i>
+                </div>
+                
+                <!-- NEW: Help Panel -->
+                <div class="help-panel" id="help-panel">
+                    <h3>Need Help?</h3>
+                    <p>Contact our support team for assistance with your NID registration:</p>
+                    
+                    <div class="form-group">
+                        <p><strong>Helpline:</strong> 1800-NID-HELP (1800-643-4357)</p>
+                        <p><strong>Email:</strong> support@pngnid.gov.pg</p>
+                        <p><strong>Digicel SMS Help:</strong> Text HELP to 16565</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h4>FAQs</h4>
+                        <ul>
+                            <li><a href="#">What documents do I need?</a></li>
+                            <li><a href="#">How long does processing take?</a></li>
+                            <li><a href="#">Where can I collect my NID card?</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" onclick="startLiveChat()">
+                            <i class="fas fa-comments me-2"></i>Start Live Chat
+                        </button>
+                    </div>
+                </div>
+                
+                <footer class="app-footer">
+                    <div class="footer-content">
+                        <div class="footer-logo">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="footer-title">PNG Civil & Identity Registry</h3>
+                        <p class="footer-description">
+                            The National Identification (NID) project is a key initiative of the Government of Papua New Guinea 
+                            to establish a comprehensive civil registry and identity system for all citizens. This system will 
+                            enable better access to services and participation in the digital economy.
+                        </p>
+                        
+                        <div class="partner-logos">
+                            <div class="partner-logo">
+                                <i class="fas fa-landmark" style="font-size: 2rem; color: #005eb8;"></i>
+                            </div>
+                            <div class="partner-logo">
+                                <i class="fas fa-signal" style="font-size: 2rem; color: #ce1126;"></i>
+                            </div>
+                            <div class="partner-logo">
+                                <i class="fas fa-globe" style="font-size: 2rem; color: #005eb8;"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="footer-links">
+                            <a href="#" class="footer-link">Privacy Policy</a>
+                            <a href="#" class="footer-link">Terms of Service</a>
+                            <a href="#" class="footer-link">FAQ</a>
+                            <a href="#" class="footer-link">Contact Us</a>
+                            <a href="#" class="footer-link">NID Offices</a>
+                        </div>
+                        
+                        <p class="copyright">
+                            &copy; <span id="currentYear"></span> Papua New Guinea Civil & Identity Registry. All rights reserved.<br>
+                            Developed in partnership with Digicel PNG and UNDP Papua New Guinea.
+                        </p>
+                    </div>
+                </footer>
             </div>
         </div>
 
         <script>
+            // Simple JavaScript to get the current year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
             // Current step tracker
             let currentStep = 1;
-            const totalSteps = 9;
+            const totalSteps = 19;
+            
+            // NEW: Offline status
+            let isOnline = true;
             
             // Initialize Three.js for 3D background
             function initThreeJS() {
@@ -912,6 +2207,16 @@
                     });
                 });
                 
+                // Set up calendar cell selection
+                document.querySelectorAll('.calendar-cell').forEach(cell => {
+                    cell.addEventListener('click', function() {
+                        if (this.textContent.length <= 2) { // Only for date cells
+                            document.querySelectorAll('.calendar-cell').forEach(c => c.classList.remove('active'));
+                            this.classList.add('active');
+                        }
+                    });
+                });
+                
                 // Set up drag and drop for upload
                 const uploadArea = document.getElementById('upload-area');
                 uploadArea.addEventListener('dragover', function(e) {
@@ -941,6 +2246,94 @@
                     });
                     fileInput.click();
                 });
+                
+                // NEW: Check online/offline status
+                checkOnlineStatus();
+                window.addEventListener('online', checkOnlineStatus);
+                window.addEventListener('offline', checkOnlineStatus);
+                
+                // NEW: Set up accessibility options
+                document.getElementById('high-contrast').addEventListener('change', function() {
+                    document.body.classList.toggle('high-contrast', this.checked);
+                });
+                
+                document.getElementById('large-text').addEventListener('change', function() {
+                    document.body.classList.toggle('large-text', this.checked);
+                });
+            }
+            
+            // NEW: Check online status
+            function checkOnlineStatus() {
+                isOnline = navigator.onLine;
+                const indicator = document.getElementById('offline-indicator');
+                
+                if (isOnline) {
+                    indicator.style.display = 'none';
+                    // Sync any offline data
+                    syncOfflineData();
+                } else {
+                    indicator.style.display = 'block';
+                }
+            }
+            
+            // NEW: Sync offline data when connection is restored
+            function syncOfflineData() {
+                // This would sync any data stored locally while offline
+                console.log('Syncing offline data...');
+                // In a real app, this would send locally stored data to the server
+            }
+            
+            // NEW: Toggle high contrast mode
+            function toggleHighContrast() {
+                document.body.classList.toggle('high-contrast');
+            }
+            
+            // NEW: Adjust text size
+            function increaseTextSize() {
+                const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+                document.body.style.fontSize = (currentSize + 1) + 'px';
+            }
+            
+            function decreaseTextSize() {
+                const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+                document.body.style.fontSize = (currentSize - 1) + 'px';
+            }
+            
+            // NEW: Toggle help panel
+            function toggleHelp() {
+                document.getElementById('help-panel').classList.toggle('active');
+            }
+            
+            // NEW: Start live chat
+            function startLiveChat() {
+                alert('Live chat feature would open here. In a real implementation, this would connect to a chat service.');
+            }
+            
+            // NEW: Edit section in review step
+            function editSection(section) {
+                let stepToGo;
+                switch(section) {
+                    case 'personal':
+                        stepToGo = 5;
+                        break;
+                    case 'address':
+                        stepToGo = 6;
+                        break;
+                    case 'documents':
+                        stepToGo = 7;
+                        break;
+                    default:
+                        stepToGo = 5;
+                }
+                
+                // Navigate to the appropriate step
+                goToStep(stepToGo);
+            }
+            
+            // NEW: Setup MFA
+            function setupMFA() {
+                alert('Multi-factor authentication setup completed!');
+                nextStep();
             }
             
             // Navigation functions
@@ -953,12 +2346,15 @@
                     updateNavButtons();
                     
                     // Special handling for certain steps
-                    if (currentStep === 5) {
+                    if (currentStep === 8) {
                         // Simulate liveness check after a delay
                         setTimeout(() => {
                             document.getElementById('liveness-check').style.display = 'block';
                         }, 2000);
                     }
+                    
+                    // Scroll to top on step change
+                    document.getElementById('main-content').scrollTo(0, 0);
                 }
             }
             
@@ -969,7 +2365,21 @@
                     document.getElementById(`step-${currentStep}`).classList.add('step-active');
                     updateProgressBar();
                     updateNavButtons();
+                    
+                    // Scroll to top on step change
+                    document.getElementById('main-content').scrollTo(0, 0);
                 }
+            }
+            
+            function goToStep(step) {
+                document.getElementById(`step-${currentStep}`).classList.remove('step-active');
+                currentStep = step;
+                document.getElementById(`step-${currentStep}`).classList.add('step-active');
+                updateProgressBar();
+                updateNavButtons();
+                
+                // Scroll to top on step change
+                document.getElementById('main-content').scrollTo(0, 0);
             }
             
             function updateProgressBar() {
@@ -1019,7 +2429,13 @@
             }
             
             function simulateUpload() {
-                handleFileUpload({ name: 'birth_certificate.jpg' });
+                const docType = document.getElementById('doc-type').value;
+                if (!docType) {
+                    alert('Please select a document type first.');
+                    return;
+                }
+                
+                handleFileUpload({ name: 'document.jpg' });
             }
             
             // Selfie capture
@@ -1043,9 +2459,16 @@
                 nextStep();
             }
             
+            // Simulate biometrics completion
+            function simulateBiometrics() {
+                alert('Biometrics completed successfully!');
+                nextStep();
+            }
+            
             // Pickup confirmation
             function confirmPickup() {
                 alert('Pickup location confirmed! You will receive an SMS with details.');
+                nextStep();
             }
             
             // Initialize the app when the DOM is loaded
